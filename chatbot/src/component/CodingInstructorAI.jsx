@@ -36,7 +36,7 @@ const CodeMasterPro = () => {
   const [activeMenu, setActiveMenu] = useState("Dashboard");
 
   // Get API key from environment variable
-  const GEMINI_API_KEY = "AIzaSyDpoqLE6ORAzcEoAQpQv5oE-lTw3chCBKQ";
+  const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
   const MODEL_NAME = "gemini-1.5-flash";
 
   const systemInstructionText =
@@ -400,57 +400,6 @@ Ready to master advanced coding concepts? Ask away! 🚀`);
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Stats Card */}
-          <div className="bg-gray-900 rounded-3xl border border-gray-700 p-8 shadow-2xl">
-            <div className="grid grid-cols-2 gap-6">
-              <div className="bg-gray-800 border border-gray-600 rounded-2xl p-6 text-center transition-all hover:-translate-y-2 hover:shadow-2xl">
-                <div className="w-12 h-12 bg-white rounded-xl mx-auto mb-4 flex items-center justify-center shadow-lg">
-                  <FaCodeBranch className="text-xl text-black" />
-                </div>
-                <div className="text-4xl font-bold text-white mb-2">2,847</div>
-                <div className="text-gray-400 text-sm font-semibold">
-                  Elite Solutions
-                </div>
-              </div>
-              <div className="bg-gray-800 border border-gray-600 rounded-2xl p-6 text-center transition-all hover:-translate-y-2 hover:shadow-2xl">
-                <div className="w-12 h-12 bg-white rounded-xl mx-auto mb-4 flex items-center justify-center shadow-lg">
-                  <FaLanguage className="text-xl text-black" />
-                </div>
-                <div className="text-4xl font-bold text-white mb-2">50+</div>
-                <div className="text-gray-400 text-sm font-semibold">
-                  Pro Languages
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Master Topics */}
-          <div className="bg-gray-900 rounded-3xl border border-gray-700 shadow-2xl">
-            <div className="p-8 border-b border-gray-700">
-              <h2 className="text-2xl font-semibold flex items-center gap-3">
-                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
-                  <FaFire className="text-black" />
-                </div>
-                Master Classes
-              </h2>
-            </div>
-            <div className="p-8">
-              <ul className="space-y-4">
-                {masterTopics.map((topic, index) => (
-                  <li
-                    key={index}
-                    className="flex items-center gap-4 group cursor-pointer transition-all hover:-translate-x-2"
-                  >
-                    <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center shadow-lg group-hover:bg-gray-600">
-                      <FaChevronRight className="text-white text-sm" />
-                    </div>
-                    <span className="font-semibold group-hover:text-white transition-colors">
-                      {topic}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
 
           {/* Input Section */}
           <div className="col-span-1 lg:col-span-2 bg-gray-900 rounded-3xl border border-gray-700 shadow-2xl">
