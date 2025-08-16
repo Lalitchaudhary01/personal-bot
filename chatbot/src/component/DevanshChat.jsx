@@ -24,12 +24,12 @@ export default function DevanshChat() {
       const data = await res.json();
 
       // Add Devansh's reply
-      setMessages([...newMessages, { sender: "Devansh", text: data.reply }]);
+      setMessages([...newMessages, { sender: "Khushboo", text: data.reply }]);
     } catch (err) {
       console.error(err);
       setMessages([
         ...newMessages,
-        { sender: "Devansh", text: "Error talking to Devansh 😅" },
+        { sender: "Khushboo", text: "Error talking to Khushboo 😅" },
       ]);
     } finally {
       setLoading(false);
@@ -47,7 +47,7 @@ export default function DevanshChat() {
     <div className="flex flex-col items-center min-h-screen bg-gray-100 p-6">
       <div className="w-full max-w-lg bg-black rounded-lg shadow-lg flex flex-col h-[80vh]">
         <div className="bg-blue-600 text-white text-lg font-bold p-4 rounded-t-lg">
-          Devansh Bot 💙 (Always mentions Anchal)
+          Khushboo Daryani
         </div>
 
         {/* Messages */}
