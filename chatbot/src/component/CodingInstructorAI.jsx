@@ -39,7 +39,7 @@ const CodeMasterPro = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Get API key from environment variable
-  const GEMINI_API_KEY = import.meta.env?.VITE_GEMINI_API_KEY;
+  const GEMINI_API_KEY = "AIzaSyDpoqLE6ORAzcEoAQpQv5oE-lTw3chCBKQ";
   const MODEL_NAME = "gemini-1.5-flash";
 
   const systemInstructionText =
