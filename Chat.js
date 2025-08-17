@@ -15,9 +15,7 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
-// -------------------------
-// Tool 1: Execute Command
-// -------------------------
+
 async function executeCommand({ command }) {
   try {
     const { stdout, stderr } = await asyncExecute(command);
@@ -49,9 +47,6 @@ const executeCommandDeclaration = {
   },
 };
 
-// -------------------------
-// Tool 2: Write To File
-// -------------------------
 async function writeToFile({ path, content }) {
   try {
     await fs.writeFile(path, content, "utf-8");
@@ -80,17 +75,12 @@ const writeToFileDeclaration = {
   },
 };
 
-// -------------------------
-// Available Tools
-// -------------------------
+
 const availableTools = {
   executeCommand,
   writeToFile,
 };
 
-// -------------------------
-// Agent Function
-// -------------------------
 async function runAgent(userProblem) {
   History.push({
     role: "user",
