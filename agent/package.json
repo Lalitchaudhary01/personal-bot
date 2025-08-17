@@ -12,6 +12,7 @@
   "type": "module",
   "dependencies": {
     "@google/genai": "^1.14.0",
+    "dotenv": "^17.2.1",
     "readline-sync": "^1.4.10"
   }
 }

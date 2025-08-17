@@ -1,8 +1,19 @@
-import { GoogleGenAI } from "@google/genai";
-import readlineSync from 'readline-sync';
+import { GoogleGenAI } from "@google/genai/web";
+import readlineSync from "readline-sync";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+if (!process.env.GEMINI_API_KEY) {
+  throw new Error("GOOGLE_API_KEY environment variable is not set");
+}
+
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
+});
 
 const History = [];
-const ai = new GoogleGenAI({ apiKey: "AIzaSyDMm5gvphiTn0aIv-dpnmq1oQ1fWrW-C4c" });
+
 
 function sum({num1,num2}){
     return num1+num2;
