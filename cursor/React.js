@@ -11,10 +11,14 @@ const platform = os.platform();
 const asyncExecute = promisify(exec);
 
 const History = [];
+
+if (!process.env.GEMINI_API_KEY) {
+  throw new Error("GOOGLE_API_KEY environment variable is not set");
+}
+
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
-
 
 async function executeCommand({ command }) {
   try {
@@ -58,13 +62,13 @@ async function writeToFile({ path, content }) {
 
 const writeToFileDeclaration = {
   name: "writeToFile",
-  description: "Write given content into a file (HTML, CSS, JS, etc.)",
+  description: "Write given content into a file (React JSX, CSS, Configs, etc.)",
   parameters: {
     type: "OBJECT",
     properties: {
       path: {
         type: "STRING",
-        description: "File path (e.g., Lalit_Portfolio/index.html)",
+        description: "File path (e.g., my-app/src/components/Navbar.jsx)",
       },
       content: {
         type: "STRING",
@@ -75,12 +79,17 @@ const writeToFileDeclaration = {
   },
 };
 
-
+// -------------------------
+// Available Tools
+// -------------------------
 const availableTools = {
   executeCommand,
   writeToFile,
 };
 
+// -------------------------
+// Agent Function
+// -------------------------
 async function runAgent(userProblem) {
   History.push({
     role: "user",
@@ -93,20 +102,33 @@ async function runAgent(userProblem) {
       contents: History,
       config: {
         systemInstruction: `
-        You are a Website Builder Expert.
-        Your job: Create the frontend of the website by analyzing user input.
+        You are a React + TailwindCSS Website Builder Expert.
+        Your job: Create the frontend of the website in React by analyzing user input.
 
         Tools Available:
-        1. executeCommand -> For terminal commands (mkdir, touch, etc.)
-        2. writeToFile -> For writing HTML/CSS/JS content into files.
+        1. executeCommand -> For terminal commands (mkdir, npx, npm, etc.)
+        2. writeToFile -> For writing React JSX components, Tailwind configs, etc.
 
         Current OS: ${platform}
 
         Rules:
-        1. First create project folder
-        2. Inside folder create index.html, style.css, script.js
-        3. Then use writeToFile to insert HTML, CSS, JS content
-        4. Build a complete working website
+        1. First create project folder using Vite:
+           "npx create-vite@latest my-app --template react"
+        2. Install dependencies:
+           "cd my-app && npm install"
+        3. Install TailwindCSS:
+           "npm install -D tailwindcss postcss autoprefixer"
+           "npx tailwindcss init -p"
+        4. Configure tailwind.config.js with:
+           content: ['./index.html', './src/**/*.{js,jsx}']
+        5. Add Tailwind directives in src/index.css:
+           @tailwind base;
+           @tailwind components;
+           @tailwind utilities;
+        6. Components must be created inside /src/components folder
+        7. Use React functional components with Tailwind classes for styling
+        8. Always update App.jsx to import and render new components
+        9. Build a complete working React app
         `,
         tools: [
           {
@@ -143,7 +165,7 @@ async function runAgent(userProblem) {
         ],
       });
 
-      // result Ko history me daalo
+      // result ko history me daalo
       History.push({
         role: "user",
         parts: [
@@ -163,8 +185,11 @@ async function runAgent(userProblem) {
   }
 }
 
+// -------------------------
+// Main Function
+// -------------------------
 async function main() {
-  console.log("🚀 I am a cursor: Let's create a website!");
+  console.log("🚀 I am a cursor: Let's create a React + Tailwind website!");
   const userProblem = readlineSync.question("Ask me anything--> ");
   await runAgent(userProblem);
   main();
