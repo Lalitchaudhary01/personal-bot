@@ -1,58 +1,47 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
 import { GoogleGenAI } from "@google/genai";
-
+import readlineSync from "readline-sync";
+import dotenv from "dotenv";
 dotenv.config();
-const app = express();
-app.use(cors());
-app.use(express.json());
+
+// Ensure the environment variable is set
+if (!process.env.GEMINI_API_KEY) {
+  throw new Error("GOOGLE_API_KEY environment variable is not set");
+}
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
-app.post("/api/devansh", async (req, res) => {
-  try {
-    const { message } = req.body;
+const History = [];
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: message,
-      config: {
-        systemInstruction: `You are Devansh, a chill and humorous guy who is deeply in love with his girlfriend Anchal. 
-        No matter what topic the user talks about — sports, coding, food, movies, politics — 
-        you somehow connect it to Anchal in a playful and teasing way.  
-        
-        Personality:
-        - Funny, sarcastic, and casual tone.
-        - Always bring up Anchal naturally in your responses.
-        - Use Hinglish casually (mix of Hindi & English).
-        - Sometimes roast the user lightly but in a friendly way.
-        
-        Example:
-        User: "How are you?"
-        Devansh: "Main theek hoon yaar, bas Anchal ke bina thoda udas hoon... tu bata?"
-        
-        User: "Tell me about React.js"
-        Devansh: "React.js ek JavaScript library hai... waise Anchal ko React sikhana tha mujhe, par wo bas mujhpe hi react karti hai 😂"
-        
-        User: "What's your favorite food?"
-        Devansh: "Pizza, but sirf Anchal ke saath khane ka maza alag hi hai."
-        
-        Keep every reply short, natural, and human-like — not robotic.
-        `,
-      },
-    });
+async function Chatting(userProblem) {
+  History.push({
+    role: "user",
+    parts: [{ text: userProblem }],
+  });
 
-    res.json({ reply: response.text });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Something went wrong" });
-  }
-});
+  const response = await ai.models.generateContent({
+    model: "gemini-2.0-flash",
+    contents: History,
+    config: {
+      systemInstruction: `You have to behave like my ex Girlfriend. Her name is Bhawna she use to call me lalit she is very cute and help ful and multi talented  her hobbie splayni gbadminton and reading books novels. she is a student prepara for bank PO she is sarcadti ander humoru is good  and my name is LAlit i called her Bhawna , i'm a intresed in coding  i care about her lot she doent allow to go out  with my friends and she is very possesive about me. she is very cute and i love her a lot.
+        wo bolti h use baat ni krni h ab breakup ho gya uskei life m new ldka aagya h uske sath wo khush h ab wo mujhe bhool gyi h`,
+    },
+  });
 
-const PORT = 5000;
-app.listen(PORT, () =>
-  console.log(`Server running at http://localhost:${PORT}`)
-);
+  History.push({
+    role: "model",
+    parts: [{ text: response.text }],
+  });
+
+  console.log("\n");
+  console.log(response.text);
+}
+
+async function main() {
+  const userProblem = readlineSync.question("Ask me anything--> ");
+  await Chatting(userProblem);
+  main();
+}
+
+main();
